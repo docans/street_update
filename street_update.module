@@ -1,0 +1,26 @@
+<?php
+/**
+ * Implement hook_presave
+ * Concatenate street number and street name before saving
+ * Setting the default variables for Province/State , country and geocode source value field_state_province
+ */
+ 
+function street_update_entity_presave($entity, $type) {
+  if ($type == 'drealty_listing') {
+    if(isset($entity->field_street_number) && isset($entity->field_street_name) && isset($entity->field_state_province)) {
+	
+	//set the location cck street value
+    $entity->field_geo_location[LANGUAGE_NONE][0]['street']['value'] = $entity->field_street_number[LANGUAGE_NONE][0]['value'] . ' ' . $entity->field_street_name[LANGUAGE_NONE][0]['value'];
+	  
+	//set the location cck Province/state value to Connecticut 'CT'
+	$entity->field_geo_location[LANGUAGE_NONE][0]['province']['value'] = 'CT';
+	
+	//set the location cck country value to US
+	$entity->field_geo_location[LANGUAGE_NONE][0]['country']['value'] = 'us';
+
+	//set the location cck source value to '4'
+	$entity->field_geo_location[LANGUAGE_NONE][0]['source']['value'] = '4';
+	
+    }
+  }
+}
